@@ -1,6 +1,8 @@
 package epf.model;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 
 public class Client {
 
@@ -77,6 +79,14 @@ public class Client {
 	public String toString() {
 		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", naissance="
 				+ naissance + "]";
+	}
+
+	public int getAge() {
+		// TODO Auto-generated method stub
+		
+		return Period.between(this.getNaissance(), LocalDate.now()).getYears();
+		
+	
 	}
 
 }

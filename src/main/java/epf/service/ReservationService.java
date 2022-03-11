@@ -43,6 +43,21 @@ public class ReservationService {
 		// TODO: créer une réservation
 	}
 	
+	public long edit(Reservation reservation) throws ServiceException {
+		long ret = 0; 
+		try {
+			
+			 ret = this.reservationDao.edit(reservation);
+			
+
+		} catch (DaoException e) {
+			e.printStackTrace();
+			throw new ServiceException();
+		}
+		// TODO: créer un client
+		return ret; 
+	}
+	
 	
 	public long delete(Reservation reservation) throws ServiceException {
 		try {

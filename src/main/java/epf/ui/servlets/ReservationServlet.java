@@ -38,18 +38,36 @@ public class ReservationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		try{
+		try {
 
-			
 			request.setAttribute("listReservations", reservationService.findAll()); // magasin où on rajoute des
 			request.getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(request, response); // requête
-								// attributs à une
-					System.out.println(reservationService.findAll());																					// http//
+			// attributs à une
+			System.out.println(reservationService.findAll()); // http//
 
 		} catch (ServiceException e) { // si la méthode lance une exception on l'attrappe//
 			e.printStackTrace();// lignes liées à l'erreur//
 		}
 
 	}
-}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+			try {
+				int id = Integer.parseInt(request.getParameter("idReservation"));
+			for (int i = 0; i < reservationService.findAll().size(); i++) {
+					if (reservationService.findAll().get(i).getId() == id) {
+						reservation = reservationService.findAll().get(i);
+					}
+				}
+
+				request.setAttribute("deleteReservation", reservationService.delete(reservation));
+
+				response.sendRedirect("/rentmanager/rents");
+
+			} catch (ServiceException e) {
+				e.printStackTrace();
+
+			}}
+	
+}

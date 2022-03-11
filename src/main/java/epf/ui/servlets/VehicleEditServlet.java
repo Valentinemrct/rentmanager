@@ -12,21 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import epf.exception.ServiceException;
-import epf.model.Reservation;
+import epf.model.Vehicle;
 import epf.service.ClientService;
 import epf.service.ReservationService;
 import epf.service.VehicleService;
 
-@WebServlet("/rents/delete")
-public class ReservationDeleteServlet extends HttpServlet {
-	@Autowired
-	ClientService clientService;
-	@Autowired
-	VehicleService vehicleService; 
+@WebServlet("/vehicles/edit")
+public class VehicleEditServlet extends HttpServlet {
 
-	private Reservation reservation;
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private VehicleService vehicleService;
 	@Autowired
 	private ReservationService reservationService;
+	
 	private static final long serialVersionID = 1L;
 
 	@Override
@@ -38,29 +38,31 @@ public class ReservationDeleteServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/rents/delete.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/edit.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String vehicleConstructeur = request.getParameter("constructeur");
+
+		int vehicleId = Integer.parseInt(request.getParameter("id"));
+		int vehiclePlaces = Integer.parseInt(request.getParameter("nb_places"));
+		
+
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		LocalDate clientNaissance = LocalDate.parse(clientNaissanceString, formatter);
+
 		try {
-			int id = Integer.parseInt(request.getParameter("idReservation"));
-			for (int i = 0; i < reservationService.findAll().size(); i++) {
-				if (reservationService.findAll().get(i).getId() == id) {
-					reservation = reservationService.findAll().get(i);
-				}
-			}
-
-			request.setAttribute("idRes", reservationService.delete(reservation));
-
-			//response.sendRedirect("/rentmanager/rents");
-
+	
+	
+			Vehicle vehicle = new Vehicle(vehicleId, vehicleConstructeur, vehiclePlaces);
+			
+			request.setAttribute("modification vehicle", this.vehicleService.edit(vehicle));
 		} catch (ServiceException e) {
 			e.printStackTrace();
-
 		}
 		this.doGet(request, response);
-
 	}
+
 }
