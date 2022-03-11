@@ -88,5 +88,10 @@ public class Client {
 		
 	
 	}
+	 public static boolean isLegal(Client client) {
+	       return
+	          client.getAge() >= 18;
+	 }
 
 }
+

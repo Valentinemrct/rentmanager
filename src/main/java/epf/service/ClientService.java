@@ -8,7 +8,6 @@ import epf.dao.ClientDao;
 import epf.exception.DaoException;
 import epf.exception.ServiceException;
 import epf.model.Client;
-import epf.persistence.ConnectionManager;
 
 @Service
 public class ClientService {
@@ -34,10 +33,14 @@ public class ClientService {
 
 	public long create(Client client) throws ServiceException {
 		try {
+		if( client.getAge() >= 18) {
 			return this.clientDao.create(client);
+		}
+		else {
+		return 0; 
+		}
 
 		} catch (DaoException e) {
-			e.printStackTrace();
 			throw new ServiceException();
 		}
 		// TODO: créer un client
@@ -92,6 +95,14 @@ public class ClientService {
 
 		// TODO: récupérer tous les clients
 
+	}
+	
+	public void verificationage(Client client) throws ServiceException {
+	
+		if (!Client.isLegal(client)) {
+			throw new ServiceException(); 
+			
+		}
 	}
 
 }

@@ -35,12 +35,7 @@ public class VehicleCreateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			nbVehicle = vehicleService.count();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
 
 	}
@@ -51,7 +46,14 @@ public class VehicleCreateServlet extends HttpServlet {
 		String nb_places = request.getParameter("nb_places");
 
 		int nb_places1 = Integer.parseInt(nb_places);
-
+		
+		try {
+			nbVehicle = vehicleService.count();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		vehicle.setId(nbVehicle +1 );
 		
 		vehicle.setConstructeur(constructeur);
@@ -60,7 +62,6 @@ public class VehicleCreateServlet extends HttpServlet {
 		try {
 
 			request.setAttribute("CreateVehicle", this.vehicleService.create(vehicle));
-			response.sendRedirect("/rentmanager/cars");
 
 		} catch (ServiceException e) {
 			e.printStackTrace();
